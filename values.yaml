@@ -1,0 +1,6 @@
+prometheus: 
+  enabled: true
+  labels:
+    # prometheus.io/path: '/actuator/prometheus'
+    prometheus.io/port: 'actuator'
+    prometheus.io/scrape: 'true'

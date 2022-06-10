@@ -3,9 +3,4 @@ name: spring-boot-app
 version: 1.0.0-SNAPSHOT
 description: Chart for applications based on Spring
 type: application
-app:
-  labels:
-    prometheus: 
-      prometheus.io/path: '/actuator/prometheus'
-      prometheus.io/port: 'actuator'
-      prometheus.io/scrape: 'true'
+

@@ -1,1 +1,3 @@
-# springboot-helm-chart
+## springboot-helm-chart
+
+`$ helm upgrade --install springboot-app .`

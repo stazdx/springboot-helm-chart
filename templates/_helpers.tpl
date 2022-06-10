@@ -22,6 +22,15 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "app.prometheus" -}}
+{{ if .Values.prometheus.enabled }}
+prometheus.io/path: '/actuator/prometheus'
+app: {{ include "app.name" . }}
+{{ else }}
+app: {{ include "app.name" . }}
+{{ end }}
+{{- end -}}
+
 {{/*
 Selector labels
 */}}
