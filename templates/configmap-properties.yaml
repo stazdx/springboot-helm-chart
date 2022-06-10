@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "app.name" . }}-properties
+    grafana_dashboard: "1"
+data:
+  application.yaml: |-
+    spring:
+      cloud:
+        test: horas_extras_devops
+    management:
+      endpoints.web.exposure.include: [ health, info, prometheus ]
+      metrics:
+        # enable distribution statistics,
+        # as exemplars are only reported for histogram buckets!
+        distribution:
+          percentiles-histogram:
+            http.server.requests: true
+          minimum-expected-value:
+            http.server.requests: 5ms
+          maximum-expected-value:
+            http.server.requests: 1000ms
