@@ -17,36 +17,36 @@ spec:
     spec:
       containers:
         - name: {{ include "app.name" . }}
-          image: "stazdx/otel-springboot-prometheus"
+          image: {{ .Values.image }}
           imagePullPolicy: Always
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.port }}
               protocol: TCP
             - name: http-management
-              containerPort: 8081
+              containerPort: {{ .Values.actuatorPort }}
               protocol: TCP
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: 8081
+              port: {{ .Values.actuatorPort }}
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: 8081
+              port: {{ .Values.actuatorPort }}
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: 8081
+              port: {{ .Values.actuatorPort }}
             periodSeconds: 5
             failureThreshold: 30
           env:
             - name: SERVER_PORT
-              value: '8080'
+              value: "{{ .Values.port }}"
             - name: MANAGEMENT_SERVER_PORT
-              value: '8081'
+              value: "{{ .Values.actuatorPort }}"
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: http://tempo.tempo:4317
+              value: {{ .Values.otelExporterOTLPEndpoint }}
             - name: OTEL_SERVICE_NAME
               value: {{ include "app.name" . }}
             - name: KUBE_POD_NAME
@@ -55,3 +55,20 @@ spec:
                   fieldPath: metadata.name
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: pod=$(KUBE_POD_NAME),namespace={{ .Release.Namespace }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "app.name" . }}-properties
+            - secretRef:
+                name: {{ include "app.name" . }}-db
+          {{ if .Values.persistence.enabled }}
+          volumeMounts:
+            - mountPath: {{ .Values.persistence.mountPath }}
+              name: {{ include "app.name" . }}-{{ .Values.persistence.name }}
+              readOnly: {{ .Values.persistence.readOnly }}
+          {{ end }}
+      {{ if .Values.persistence.enabled }}
+      volumes:
+        - name: {{ include "app.name" . }}-{{ .Values.persistence.name }}
+          persistentVolumeClaim:
+            claimName: {{ include "app.name" . }}-{{ .Values.persistence.name }}-pvc
+      {{ end }}

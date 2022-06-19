@@ -1,6 +1,21 @@
+
+image: stazdx/otel-springboot-prometheus
+port: 8080
+actuatorPort: 8081
+otelExporterOTLPEndpoint: http://tempo.tempo:4317
+
+persistence:
+  enabled: false
+  mountPath: /tmp/test
+  name: data
+  readOnly: false
+  accessMode: ReadWriteOnce
+  storage: 5Gi
+  sc:
+    enabled: true
+
 prometheus: 
   enabled: true
   labels:
-    # prometheus.io/path: '/actuator/prometheus'
     prometheus.io/port: 'actuator'
     prometheus.io/scrape: 'true'

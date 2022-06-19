@@ -12,11 +12,11 @@ spec:
   type: ClusterIP
   ports:
     - name: http
-      port: 8080
+      port: {{ .Values.port }}
       targetPort: http
       protocol: TCP
     - name: http-management
-      port: 8081
+      port: {{ .Values.actuatorPort }}
       targetPort: http-management
       protocol: TCP
   selector:

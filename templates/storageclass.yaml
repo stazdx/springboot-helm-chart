@@ -1,0 +1,10 @@
+{{ if and .Values.persistence.enabled .Values.persistence.sc.enabled }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ include "app.name" . }}-{{ .Values.persistence.name }}-sc
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+  fsType: ext4 
+{{ end }}
