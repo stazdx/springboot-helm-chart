@@ -1,5 +1,5 @@
 
-image: stazdx/otel-springboot-prometheus
+image: stazdx/otel-springboot-prometheus # This image uses arm64
 port: 8080
 actuatorPort: 8081
 otelExporterOTLPEndpoint: http://tempo.tempo:4317
