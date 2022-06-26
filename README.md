@@ -4,4 +4,4 @@
 
 Building manifests:
 
-`$ helm upgrade --install springboot-app . --debug --dryn-run`
+`$ helm upgrade --install springboot-app . --debug --dry-run`
